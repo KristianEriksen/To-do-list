@@ -1,12 +1,19 @@
 const express = require ("express");
+const path = require("path");
 
 
 const app = express();
+app.set("view engine", "ejs");
+
+
 app.use(express.urlencoded({extended:true}));
+
+app.use("/css", express.static("public/css")); 
+// app.use('*/css',express.static('public/css'));
 
 var items =["Buy Food", "Cook Food", "Eat Food"];
 
-app.set("view engine", "ejs");
+
 
 app.get("/", function(req, res){
   var today = new Date();
@@ -19,8 +26,9 @@ app.get("/", function(req, res){
   };
 
   var day = today.toLocaleDateString("en-US", options);
-
-  res.render("list", { kindOfDay: day, newListItems: items });
+  
+  res.render("list", { listTitle: day, newListItems: items });
+  
 });
 
 app.post("/", function(req, res){
@@ -29,7 +37,8 @@ app.post("/", function(req, res){
     res.redirect("/");
 });
 
-app.listen(3000, function(){
+
+app.listen(3001, function(){
     console.log("Server started on port 3000")
    
     
